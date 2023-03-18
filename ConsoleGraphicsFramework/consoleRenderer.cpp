@@ -1,14 +1,16 @@
 #include "consoleRenderer.h"
 
-void ConsoleRenderer::setColor(int color)
+#ifdef WINDOWS_PLATFORM
+
+void ConsoleRenderer::setColor(Color color)
 {
     SetConsoleTextAttribute(hSTD_IO, (WORD)color);
 }
 
 void ConsoleRenderer::reset()
 {
-    SetConsoleTextAttribute(hSTD_IO, backgroundBLACK);
-    SetConsoleTextAttribute(hSTD_IO, foregroundBRIGHT_WHITE);
+    SetConsoleTextAttribute(hSTD_IO, (WORD)Color::backgroundBLACK);
+    SetConsoleTextAttribute(hSTD_IO, (WORD)Color::foregroundBRIGHT_WHITE);
     setCursorPosition(0, 0);
 }
 
@@ -42,13 +44,21 @@ void ConsoleRenderer::initRenderer(IVec2 _sizeInChars)
 
     ShowScrollBar(hwnd, SB_BOTH, FALSE);
     DWORD dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;           // Window Extended Style
-    DWORD dwStyle = ( WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+    DWORD dwStyle = (WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
 
     IVec2 offset(50, 50);
     constexpr const int scrollBarSize = 20;
     RECT rect = { offset.x, offset.y, offset.x + (int)(fontSize.x * 0.5f * sizeInChar.x) + scrollBarSize, offset.y + fontSize.y * sizeInChar.y };
     AdjustWindowRectEx(&rect, dwStyle, FALSE, dwExStyle);   // To hide scroll-bar
-    
+
     MoveWindow(hwnd, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, TRUE);
 
 }
+
+#endif // WINDOWS_PLATFORM
+
+#ifdef LINUX_PLATFORM
+    //TODO
+
+#endif // LINUX_PLATFORM
+

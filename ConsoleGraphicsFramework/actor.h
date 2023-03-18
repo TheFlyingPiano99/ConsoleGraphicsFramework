@@ -195,7 +195,7 @@ class Textbox : public Actor {
 public:
 	Textbox(std::wstring_view _text) : Actor() {
 		text = _text;
-		pos = Vec2(40.0f, 8.0f);
+		pos = Vec2(60.0f, 8.0f);
 		prevPos = pos;
 		description = "textbox";
 	}

@@ -7,7 +7,7 @@
 
 
 void Sky::draw(ConsoleRenderer& renderer) {
-	renderer.setColor(backgroundLIGHT_BLUE);
+	renderer.setColor(Color::backgroundLIGHT_BLUE);
 	for (int x = 0; x <= 100; x += 50) {
 		for (int y = 0; y < 10; y++) {
 			if (renderer.setCursorPosition(x, y)) {
@@ -173,7 +173,7 @@ void Walkers::draw(ConsoleRenderer& renderer) {
 		clear(renderer);
 	}
 
-	renderer.setColor(foregroundLIGHT_YELLOW);
+	renderer.setColor(Color::foregroundLIGHT_YELLOW);
 	if (renderer.setCursorPosition((int)pos.x - 10, (int)pos.y - 16)) {
 		std::cout << "___";
 	}
@@ -384,7 +384,7 @@ void Grass::draw(ConsoleRenderer& renderer)
 {
 	clear(renderer);
 	renderer.setCursorPosition(pos.x, pos.y);
-	renderer.setColor(foregroundLIGHT_GREEN);
+	renderer.setColor(Color::foregroundLIGHT_GREEN);
 	if (pos.y < 20.0f) {
 		std::cout << " ~ ";
 	}
@@ -420,15 +420,15 @@ void Flower::draw(ConsoleRenderer& renderer)
 {
 	clear(renderer);
 	if (pos.y < 30.0f) {
-		renderer.setColor(foregroundLIGHT_YELLOW);
+		renderer.setColor(Color::foregroundLIGHT_YELLOW);
 		renderer.setCursorPosition(pos.x, pos.y - 0);
 		std::cout << "*";
 	}
 	else {
 		renderer.setCursorPosition(pos.x, pos.y - 1);
-		renderer.setColor(foregroundLIGHT_YELLOW);
+		renderer.setColor(Color::foregroundLIGHT_YELLOW);
 		std::cout << "*";
-		renderer.setColor(foregroundGREEN);
+		renderer.setColor(Color::foregroundGreen);
 		renderer.setCursorPosition(pos.x, pos.y - 0);
 		std::cout << "|";
 	}
@@ -461,7 +461,7 @@ void Heart::clear(ConsoleRenderer& renderer)
 void Heart::draw(ConsoleRenderer& renderer)
 {
 	clear(renderer);
-	renderer.setColor(foregroundLIGHT_PURPLE);
+	renderer.setColor(Color::foregroundLIGHT_PURPLE);
 	renderer.setCursorPosition(pos.x - 2, pos.y - 2);
 	std::cout << " _ _ ";
 	renderer.setCursorPosition(pos.x - 2, pos.y - 1);
@@ -476,7 +476,7 @@ void Heart::draw(ConsoleRenderer& renderer)
 
 void Textbox::update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {
 	lifeTime += dt;
-	if (lifeTime > 10.0f) {
+	if (lifeTime > 8.0f) {
 		toDelete.push_back(this);
 	}
 }
@@ -485,7 +485,7 @@ void Textbox::clear(ConsoleRenderer& renderer)
 {
 	for (int y = 0; y < 5; y++) {
 		for (int x = 0; x < text.size() + 4; x++) {
-			renderer.setCursorPosition(prevPos.x + x, prevPos.y - y);
+			renderer.setCursorPosition(prevPos.x + x - text.size() / 2, prevPos.y - y);
 			std::cout << " ";
 		}
 	}
@@ -497,23 +497,38 @@ void Textbox::draw(ConsoleRenderer& renderer)
 		firstDraw = false;
 		clear(renderer);
 	}
-
-	renderer.setColor(foregroundBRIGHT_WHITE);
-	renderer.setCursorPosition(pos.x, pos.y - 4);
-	for (int x = 0; x < text.size() + 4; x++) {
-		std::cout << "*";
+	int minMargin = 2;
+	int timesTen = (text.size() + 2.0f * minMargin + 2.0f) / 10.0f + 1;
+	int posOffset = timesTen * 10 / 2.0;
+	int margin = (timesTen * 10 - text.size()) / 2.0f;
+	renderer.setColor(Color::foregroundBRIGHT_WHITE);
+	for (int x = 0; x < timesTen; x++) {
+		renderer.setCursorPosition(pos.x - posOffset + x * 10, pos.y - 4);
+		std::cout << "**********";
 	}
-	renderer.draw(pos.x, pos.y - 3, "*");
-	renderer.draw(pos.x, pos.y - 2, "*");
-	renderer.draw(pos.x, pos.y - 1, "*");
-	renderer.draw(pos.x + 2, pos.y - 2, text);
-	renderer.draw(pos.x + text.size() + 3, pos.y - 3, "*");
-	renderer.draw(pos.x + text.size() + 3, pos.y - 2, "*");
-	renderer.draw(pos.x + text.size() + 3, pos.y - 1, "*");
-	renderer.setCursorPosition(pos.x, pos.y - 0);
-	for (int x = 0; x < text.size() + 4; x++) {
-		std::cout << "*";
+	for (int x = 0; x < timesTen; x++) {
+		renderer.setCursorPosition(pos.x - posOffset + x * 10, pos.y - 3);
+		std::cout << "          ";
 	}
+	for (int x = 0; x < timesTen; x++) {
+		renderer.setCursorPosition(pos.x - posOffset + x * 10, pos.y - 2);
+		std::cout << "          ";
+	}
+	for (int x = 0; x < timesTen; x++) {
+		renderer.setCursorPosition(pos.x - posOffset + x * 10, pos.y - 1);
+		std::cout << "          ";
+	}
+	for (int x = 0; x < timesTen; x++) {
+		renderer.setCursorPosition(pos.x - posOffset + x * 10, pos.y - 0);
+		std::cout << "**********";
+	}
+	renderer.draw(pos.x - posOffset, pos.y - 3, "*");
+	renderer.draw(pos.x - posOffset, pos.y - 2, "* ");
+	renderer.draw(pos.x - posOffset, pos.y - 1, "*");
+	renderer.draw(pos.x - posOffset + margin, pos.y - 2, text);
+	renderer.draw(pos.x - posOffset + timesTen * 10 - 1, pos.y - 3, "*");
+	renderer.draw(pos.x - posOffset + timesTen * 10 - 2, pos.y - 2, " *");
+	renderer.draw(pos.x - posOffset + timesTen * 10 - 1, pos.y - 1, "*");
 
 	prevPos = pos;
 	renderer.reset();

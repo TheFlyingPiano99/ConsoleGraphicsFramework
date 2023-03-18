@@ -29,5 +29,7 @@ std::vector<std::wstring> Messages::messages = {
 	L"Szere! <3",
 	L"Kiégek! XD",
 	L"Nem az a fontos a Jóistennek, hogy kívül mit hordunk, hanem hogy belül mi van.",
-	L"Az őszinteség a szellemi élet alapja."
+	L"Az őszinteség a szellemi élet alapja.",
+	L"Bizony a virgács!",
+	L"Bi-bi-bi bizony a VIRGÁCS!"
 };
