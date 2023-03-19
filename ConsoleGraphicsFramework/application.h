@@ -1,6 +1,18 @@
 ﻿#pragma once
 
+#include "scene.h"
+#include "consoleRenderer.h"
+
 class Application {
 public:
-	void run() const;
+	~Application();
+
+	void run();
+
+private:
+	void buildScene();
+	void mainLoop();
+
+	Scene scene;
+	ConsoleRenderer renderer;
 };

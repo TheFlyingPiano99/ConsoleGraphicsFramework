@@ -12,7 +12,6 @@
 */
 
 #include <fcntl.h>
-#include <io.h>
 #include <iostream>
 
 #include "vectorAlgebra.h"
@@ -39,51 +38,44 @@ enum class Color {
     foregroundBlack = 0x0000,
     foregroundBlue = 0x0001,
     foregroundGreen = 0x0002,
-    foregroundAQUA = 0x0003,
-    foregroundRED = 0x0004,
-    foregroundPURPLE = 0x0005,
-    foregroundYELLOW = 0x0006,
-    foregroundWHITE = 0x0007,
+    foregroundAqua = 0x0003,
+    foregroundRed = 0x0004,
+    foregroundPurple = 0x0005,
+    foregroundYellow = 0x0006,
+    foregroundWhite = 0x0007,
 
-    foregroundGRAY = 0x0008,
-    foregroundLIGHT_BLUE = 0x0009,
-    foregroundLIGHT_GREEN = 0x000A,
-    foregroundLIGHT_AQUA = 0x000B,
-    foregroundLIGHT_RED = 0x000C,
-    foregroundLIGHT_PURPLE = 0x000D,
-    foregroundLIGHT_YELLOW = 0x000E,
-    foregroundBRIGHT_WHITE = 0x000F,
+    foregroundGray = 0x0008,
+    foregroundLightBlue = 0x0009,
+    foregroundLightGreen = 0x000A,
+    foregroundLightAqua = 0x000B,
+    foregroundLightRed = 0x000C,
+    foregroundLightPurple = 0x000D,
+    foregroundLightYellow = 0x000E,
+    foregroundBrightWhite = 0x000F,
 
-    backgroundBLACK = 0x0000,
-    backgroundBLUE = 0x0010,
-    backgroundGREEN = 0x0020,
-    backgroundAQUA = 0x0030,
-    backgroundRED = 0x0040,
-    backgroundPURPLE = 0x0050,
-    backgroundYELLOW = 0x0060,
-    backgroundWHITE = 0x0070,
+    backgroundBlack = 0x0000,
+    backgroundBlue = 0x0010,
+    backgroundGreen = 0x0020,
+    backgroundAqua = 0x0030,
+    backgroundRed = 0x0040,
+    backgroundPurple = 0x0050,
+    backgroundYellow = 0x0060,
+    backgroundWhite = 0x0070,
 
-    backgroundGRAY = 0x0080,
-    backgroundLIGHT_BLUE = 0x0090,
-    backgroundLIGHT_GREEN = 0x00A0,
-    backgroundLIGHT_AQUA = 0x00B0,
-    backgroundLIGHT_RED = 0x00C0,
-    backgroundLIGHT_PURPLE = 0x00D0,
-    backgroundLIGHT_YELLOW = 0x00E0,
-    backgroundBRIGHT_WHITE = 0x00F0
+    backgroundGray = 0x0080,
+    backgroundLightBlue = 0x0090,
+    backgroundLightGreen = 0x00A0,
+    backgroundLightAqua = 0x00B0,
+    backgroundLightRed = 0x00C0,
+    backgroundLightPurple = 0x00D0,
+    backgroundLightYellow = 0x00E0,
+    backgroundBrightWhite = 0x00F0
 };
 
 class ConsoleRenderer {
-    HANDLE hSTD_IO = nullptr;    // STDIO handle
-    IVec2 sizeInChar;
-    IVec2 cursorPos;
-
 public:
 
-    IVec2 getSizeInChars() const {
-        return sizeInChar;
-    }
-
+    IVec2 getSizeInChars() const;
 
     void setColor(Color color);
 
@@ -91,116 +83,49 @@ public:
     
     void initRenderer(IVec2 _sizeInChars);
 
-    void clearScreen()
-    {
-        CONSOLE_SCREEN_BUFFER_INFO csbi;
-        COORD topLeft = { 0, 0 };
-
-        // Figure out the current width and height of the console window
-        if (!GetConsoleScreenBufferInfo(hSTD_IO, &csbi)) {
-            abort();
-        }
-        DWORD length = csbi.dwSize.X * csbi.dwSize.Y;
-
-        DWORD written;
-
-        // Flood-fill the console with spaces to clear it
-        FillConsoleOutputCharacter(hSTD_IO, TEXT(' '), length, topLeft, &written);
-
-        // Reset the attributes of every character to the default.
-        // This clears all background colour formatting, if any.
-        FillConsoleOutputAttribute(hSTD_IO, csbi.wAttributes, length, topLeft, &written);
-
-        // Move the cursor back to the top left for the next sequence of writes
-        SetConsoleCursorPosition(hSTD_IO, topLeft);
-    }
+    void clearScreen();
 
     /*
     * x is the column, y is the row.The origin(0, 0) is top - left.
     * Returns true if the position is inside the window
     */
-    bool setCursorPosition(int x, int y)
-    {
-        if (0 > x || 0 > y || x > sizeInChar.x || y > sizeInChar.y) {   // Prevent out of window positions
-            return false;
-        }
-        COORD coord = { (SHORT)x, (SHORT)y };
-        if (SetConsoleCursorPosition(hSTD_IO, coord)) {
-            cursorPos = IVec2(x, y);
-            return true;
-        }
-        return false;
-    }
+    bool setCursorPosition(int x, int y);
 
-    IVec2 getCursorPosition() const {
-        return cursorPos;
-    }
+    IVec2 getCursorPosition() const;
 
-    void drawSprite(Vec2 pos, char* sprite[], unsigned int width, unsigned int height)
-    {
-        for (int y = 0; y < height; y++) {
-            setCursorPosition(pos.x - width / 2, pos.y - height / 2 + y);
-            std::cout << sprite[y];
-        }
-    }
+    void drawSprite(Vec2 pos, char* sprite[], unsigned int width, unsigned int height);
 
-    void draw(float x, float y, std::string_view str) {
-        if (setCursorPosition(x, y)) {
-            std::cout << str;
-        }
-    }
+    void draw(float x, float y, std::string_view str);
 
-    void draw(float x, float y, std::wstring_view str) {
-        if (setCursorPosition(x, y)) {
-            std::cout << utf8_encode(str);
-        }
-    }
+    void draw(float x, float y, std::wstring_view str);
 
-    void draw(Vec2 pos, std::string_view str) {
-        if (setCursorPosition(pos.x, pos.y)) {
-            std::cout << str;
-        }
-    }
+    void draw(Vec2 pos, std::string_view str);
 
-    void draw(Vec2 pos, std::wstring_view str) {
-        if (setCursorPosition(pos.x, pos.y)) {
-            std::cout << utf8_encode(str);
-        }
-    }
+    void draw(Vec2 pos, std::wstring_view str);
 
-    void draw(std::string_view str) const {
-        std::cout << str;
-    }
+    void draw(std::string_view str) const;
 
-    void draw(std::wstring_view str) const {
-        std::cout << utf8_encode(str);
-    }
+    void draw(std::wstring_view str) const;
 
-    private:
+private:
 
     /*
     * Source code from: https://stackoverflow.com/questions/215963/how-do-you-properly-use-widechartomultibyte
     * Accessed: 2023-03-18
+    * Convert a wide Unicode string to an UTF8 string
     */
-    // Convert a wide Unicode string to an UTF8 string
-    std::string utf8_encode(std::wstring_view wstr) const
-    {
-        if (wstr.empty()) return std::string();
-        int size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
-        std::string strTo(size_needed, 0);
-        WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
-        return strTo;
-    }
+    std::string utf8_encode(std::wstring_view wstr) const;
 
-    // Convert an UTF8 string to a wide Unicode String
-    std::wstring utf8_decode(std::string_view str) const
-    {
-        if (str.empty()) return std::wstring();
-        int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
-        std::wstring wstrTo(size_needed, 0);
-        MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
-        return wstrTo;
-    }
+    /*
+    * Source code from: https://stackoverflow.com/questions/215963/how-do-you-properly-use-widechartomultibyte
+    * Accessed: 2023-03-18
+    * Convert an UTF8 string to a wide Unicode String
+    */
+    std::wstring utf8_decode(std::string_view str) const;
+
+    HANDLE hSTD_IO = nullptr;    // STDIO handle
+    IVec2 sizeInChar;
+    IVec2 cursorPos;
 };
 #endif
 

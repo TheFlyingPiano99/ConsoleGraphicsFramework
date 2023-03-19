@@ -7,7 +7,7 @@
 
 
 void Sky::draw(ConsoleRenderer& renderer) {
-	renderer.setColor(Color::backgroundLIGHT_BLUE);
+	renderer.setColor(Color::backgroundLightBlue);
 	for (int x = 0; x <= 100; x += 50) {
 		for (int y = 0; y < 10; y++) {
 			if (renderer.setCursorPosition(x, y)) {
@@ -173,7 +173,7 @@ void Walkers::draw(ConsoleRenderer& renderer) {
 		clear(renderer);
 	}
 
-	renderer.setColor(Color::foregroundLIGHT_YELLOW);
+	renderer.setColor(Color::foregroundLightYellow);
 	if (renderer.setCursorPosition((int)pos.x - 10, (int)pos.y - 16)) {
 		std::cout << "___";
 	}
@@ -361,7 +361,7 @@ void Scoreboard::draw(ConsoleRenderer& renderer)
 {
 	clear(renderer);
 	renderer.setCursorPosition(prevPos.x, prevPos.y);
-	std::cout << std::string("Pontok: ").append(std::to_string(score));
+	renderer.draw(std::wstring(L"Megkerült oszlopok: ").append(std::to_wstring(score)));
 	renderer.reset();
 }
 
@@ -384,7 +384,7 @@ void Grass::draw(ConsoleRenderer& renderer)
 {
 	clear(renderer);
 	renderer.setCursorPosition(pos.x, pos.y);
-	renderer.setColor(Color::foregroundLIGHT_GREEN);
+	renderer.setColor(Color::foregroundLightGreen);
 	if (pos.y < 20.0f) {
 		std::cout << " ~ ";
 	}
@@ -420,13 +420,13 @@ void Flower::draw(ConsoleRenderer& renderer)
 {
 	clear(renderer);
 	if (pos.y < 30.0f) {
-		renderer.setColor(Color::foregroundLIGHT_YELLOW);
+		renderer.setColor(Color::foregroundLightYellow);
 		renderer.setCursorPosition(pos.x, pos.y - 0);
 		std::cout << "*";
 	}
 	else {
 		renderer.setCursorPosition(pos.x, pos.y - 1);
-		renderer.setColor(Color::foregroundLIGHT_YELLOW);
+		renderer.setColor(Color::foregroundLightYellow);
 		std::cout << "*";
 		renderer.setColor(Color::foregroundGreen);
 		renderer.setCursorPosition(pos.x, pos.y - 0);
@@ -461,7 +461,7 @@ void Heart::clear(ConsoleRenderer& renderer)
 void Heart::draw(ConsoleRenderer& renderer)
 {
 	clear(renderer);
-	renderer.setColor(Color::foregroundLIGHT_PURPLE);
+	renderer.setColor(Color::foregroundLightPurple);
 	renderer.setCursorPosition(pos.x - 2, pos.y - 2);
 	std::cout << " _ _ ";
 	renderer.setCursorPosition(pos.x - 2, pos.y - 1);
@@ -501,7 +501,7 @@ void Textbox::draw(ConsoleRenderer& renderer)
 	int timesTen = (text.size() + 2.0f * minMargin + 2.0f) / 10.0f + 1;
 	int posOffset = timesTen * 10 / 2.0;
 	int margin = (timesTen * 10 - text.size()) / 2.0f;
-	renderer.setColor(Color::foregroundBRIGHT_WHITE);
+	renderer.setColor(Color::foregroundBrightWhite);
 	for (int x = 0; x < timesTen; x++) {
 		renderer.setCursorPosition(pos.x - posOffset + x * 10, pos.y - 4);
 		std::cout << "**********";
