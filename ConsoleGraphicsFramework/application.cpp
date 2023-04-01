@@ -7,6 +7,7 @@
 #include <cmath>
 #include <string>
 
+#include "AudioPlayer.h"
 #include "actor.h"
 
 namespace cgf {
@@ -56,7 +57,7 @@ namespace cgf {
 
 			scene.handleInput();
 
-			scene.update();
+			scene.update(player);
 
 			if (GetKeyState(VK_CANCEL) & 0x8000) {
 				// TODO Not working
@@ -88,6 +89,8 @@ namespace cgf {
 		renderer.clearScreen();
 
 		buildScene();
+
+		player.playAudio("sine880", SourceType::resource);
 
 		mainLoop();
 	}

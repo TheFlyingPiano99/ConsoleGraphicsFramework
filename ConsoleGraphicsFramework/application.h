@@ -20,5 +20,6 @@ namespace cgf {
 
 		Scene scene;
 		ConsoleRenderer renderer;
+		AudioPlayer player;
 	};
 }

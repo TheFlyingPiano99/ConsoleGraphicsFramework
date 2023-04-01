@@ -4,6 +4,7 @@
 
 #include "vectorAlgebra.h"
 #include "consoleRenderer.h"
+#include "AudioPlayer.h"
 
 using namespace VectorAlgebra;
 
@@ -21,7 +22,7 @@ namespace cgf {
 
 		virtual void handleInput(float dt) {}
 
-		virtual void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {}
+		virtual void update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {}
 
 		virtual void clear(ConsoleRenderer& renderer) {}
 
@@ -79,7 +80,7 @@ namespace cgf {
 
 		void handleInput(float dt) override;
 
-		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
 		void clear(ConsoleRenderer& renderer) override;
 
@@ -104,7 +105,7 @@ namespace cgf {
 
 		~Pole();
 
-		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
 		void clear(cgf::ConsoleRenderer& renderer) override;
 
@@ -151,7 +152,7 @@ namespace cgf {
 			description = "grass";
 		}
 
-		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
 		void clear(ConsoleRenderer& renderer) override;
 
@@ -168,7 +169,7 @@ namespace cgf {
 			description = "flower";
 		}
 
-		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
 		void clear(ConsoleRenderer& renderer) override;
 
@@ -186,7 +187,7 @@ namespace cgf {
 			description = "heart";
 		}
 
-		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
 		void clear(ConsoleRenderer& renderer) override;
 
@@ -206,7 +207,7 @@ namespace cgf {
 			description = "textbox";
 		}
 
-		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
 		void clear(ConsoleRenderer& renderer) override;
 

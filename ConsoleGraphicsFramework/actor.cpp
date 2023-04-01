@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "messages.h"
+#include "AudioPlayer.h"
 
 namespace cgf {
 
@@ -19,7 +20,7 @@ namespace cgf {
 		renderer.reset();
 	}
 
-	void Walkers::update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {
+	void Walkers::update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {
 		animationTimer += dt;
 		if (animationTimer > 1.0f) {
 			animationTimer = 0.0f;
@@ -39,6 +40,7 @@ namespace cgf {
 		for (auto actor : actors) {
 			if (actor->getDescription() == "pole"
 				&& distance(actor->getPos(), pos) < 5.0f && !static_cast<Pole*>(actor)->isClaimed()) {	// Hit pole
+				player.playAudio("sine440", SourceType::resource);
 				static_cast<Pole*>(actor)->claim();
 				toAdd.push_back(new Textbox(Messages::getRandomMessage()));
 				auto messageIter = std::find_if(actors.begin(), actors.end(), [](Actor* const actor) -> bool { return actor->getDescription() == "textbox"; });
@@ -279,7 +281,7 @@ namespace cgf {
 	Pole::~Pole() {
 	}
 
-	void Pole::update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {
+	void Pole::update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {
 		pos += dt * Vec2(0, 0.2f) * fmaxf(pos.y, 0.0f);
 		if (pos.y >= 40.0f) {
 			toDelete.push_back(this);
@@ -366,7 +368,7 @@ namespace cgf {
 		renderer.reset();
 	}
 
-	void Grass::update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd)
+	void Grass::update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd)
 	{
 		pos += dt * Vec2(0, 0.2f) * fmaxf(pos.y, 0.0f);
 		if (pos.y >= 40) {
@@ -400,7 +402,7 @@ namespace cgf {
 	}
 
 
-	void Flower::update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd)
+	void Flower::update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd)
 	{
 		pos += dt * Vec2(0, 0.2f) * fmaxf(pos.y, 0.0f);
 		if (pos.y >= 40) {
@@ -438,7 +440,7 @@ namespace cgf {
 	}
 
 
-	void Heart::update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd)
+	void Heart::update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd)
 	{
 		pos += dt * velocity;
 		lifeTime += dt;
@@ -475,7 +477,7 @@ namespace cgf {
 		renderer.reset();
 	}
 
-	void Textbox::update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {
+	void Textbox::update(float dt, AudioPlayer& player, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {
 		lifeTime += dt;
 		if (lifeTime > 8.0f) {
 			toDelete.push_back(this);

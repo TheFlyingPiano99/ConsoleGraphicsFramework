@@ -22,9 +22,9 @@ void cgf::Scene::handleInput() {
 /*
 * Szereplők frissítése
 */
-void cgf::Scene::update() {
+void cgf::Scene::update(AudioPlayer& player) {
 	for (auto& actor : actors) {
-		actor->update(deltaT, actors, toDelete, toAdd);
+		actor->update(deltaT, player, actors, toDelete, toAdd);
 	}
 	// Clear and delete objects:
 	for (auto actor : toDelete) {

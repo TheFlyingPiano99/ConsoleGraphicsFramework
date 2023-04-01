@@ -26,7 +26,7 @@ namespace cgf {
 		/*
 		* Szereplők frissítése
 		*/
-		void update();
+		void update(AudioPlayer& player);
 
 		/*
 		* Kirajzolás
