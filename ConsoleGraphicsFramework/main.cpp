@@ -1,6 +1,6 @@
 #include "application.h"
 
 void main() {
-	Application app;
+	cgf::Application app;
 	app.run();
 }

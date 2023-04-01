@@ -7,207 +7,210 @@
 
 using namespace VectorAlgebra;
 
-/*
-* Jelenetben résztvevő szereplők ősosztálya
-*/
-class Actor {
-public:
+namespace cgf {
 
-	Actor() {}
+	/*
+	* Jelenetben résztvevő szereplők ősosztálya
+	*/
+	class Actor {
+	public:
 
-	virtual ~Actor() {}
+		Actor() {}
 
-	virtual void handleInput(float dt) {}
+		virtual ~Actor() {}
 
-	virtual void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {}
+		virtual void handleInput(float dt) {}
 
-	virtual void clear(ConsoleRenderer& renderer) {}
+		virtual void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) {}
 
-	virtual void draw(ConsoleRenderer& renderer) {}
+		virtual void clear(ConsoleRenderer& renderer) {}
 
-	Vec2 getPos() const {
-		return pos;
-	}
+		virtual void draw(ConsoleRenderer& renderer) {}
 
-	void setPos(Vec2 _pos) {
-		pos = _pos;
-	}
+		Vec2 getPos() const {
+			return pos;
+		}
 
-	std::string_view getDescription() const {
-		return description;
-	}
+		void setPos(Vec2 _pos) {
+			pos = _pos;
+		}
 
-	void setDescription(std::string_view _desc) {
-		description = _desc;
-	}
+		std::string_view getDescription() const {
+			return description;
+		}
 
-protected:
-	Vec2 pos;
-	Vec2 prevPos;
-	std::string description;
-};
+		void setDescription(std::string_view _desc) {
+			description = _desc;
+		}
 
-//-------------------------------------------------------
+	protected:
+		Vec2 pos;
+		Vec2 prevPos;
+		std::string description;
+	};
+
+	//-------------------------------------------------------
 
 
-/*
-* Égbolt
-*/
-class Sky : public Actor {
-public:
-	void draw(ConsoleRenderer& renderer) override;
+	/*
+	* Égbolt
+	*/
+	class Sky : public Actor {
+	public:
+		void draw(ConsoleRenderer& renderer) override;
 
-private:
+	private:
 
-};
+	};
 
-/*
-* Járokelők
-*/
-class Walkers : public Actor {
-public:
-	Walkers() {
-		pos = Vec2(50, 38);
-		description = "walkers";
-	}
+	/*
+	* Járokelők
+	*/
+	class Walkers : public Actor {
+	public:
+		Walkers() {
+			pos = Vec2(50, 38);
+			description = "walkers";
+		}
 
-	void handleInput(float dt) override;
+		void handleInput(float dt) override;
 
-	void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
-	void clear(ConsoleRenderer& renderer) override;
+		void clear(ConsoleRenderer& renderer) override;
 
-	void draw(ConsoleRenderer& renderer) override;
+		void draw(ConsoleRenderer& renderer) override;
 
-private:
-	float velocity = 0.0f;
-	int animationPhase = 0;
-	float animationTimer = 0.0f;
-};
+	private:
+		float velocity = 0.0f;
+		int animationPhase = 0;
+		float animationTimer = 0.0f;
+	};
 
-/*
-* Pózna
-*/
-class Pole : public Actor {
-public:
-	Pole() : Actor() {
-		pos = Vec2(20 + rand() % 100, 11);
-		prevPos = pos;
-		description = "pole";
-	}
+	/*
+	* Pózna
+	*/
+	class Pole : public Actor {
+	public:
+		Pole() : Actor() {
+			pos = Vec2(20 + rand() % 100, 11);
+			prevPos = pos;
+			description = "pole";
+		}
 
-	~Pole();
+		~Pole();
 
-	void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
-	void clear(ConsoleRenderer& renderer) override;
+		void clear(cgf::ConsoleRenderer& renderer) override;
 
-	void draw(ConsoleRenderer& renderer) override;
-	
-	bool isClaimed() const {
-		return claimed;
-	}
+		void draw(cgf::ConsoleRenderer& renderer) override;
 
-	void claim() {
-		claimed = true;
-	}
+		bool isClaimed() const {
+			return claimed;
+		}
 
-private:
-	bool claimed = false;
-};
+		void claim() {
+			claimed = true;
+		}
 
-class Scoreboard : public Actor {
-public:
-	Scoreboard() : Actor() {
-		pos = Vec2(3, 2);
-		prevPos = pos;
-		description = "scoreboard";
-	}
+	private:
+		bool claimed = false;
+	};
 
-	void clear(ConsoleRenderer& renderer) override;
+	class Scoreboard : public Actor {
+	public:
+		Scoreboard() : Actor() {
+			pos = Vec2(3, 2);
+			prevPos = pos;
+			description = "scoreboard";
+		}
 
-	void draw(ConsoleRenderer& renderer) override;
+		void clear(cgf::ConsoleRenderer& renderer) override;
 
-	void IncrementScore(unsigned int increment) {
-		score += increment;
-	}
+		void draw(cgf::ConsoleRenderer& renderer) override;
 
-private:
-	unsigned int score = 0;
+		void IncrementScore(unsigned int increment) {
+			score += increment;
+		}
 
-};
+	private:
+		unsigned int score = 0;
 
-class Grass : public Actor {
-public:
-	Grass() : Actor() {
-		pos = Vec2(5.0f + rand() % 110, 12 + rand() % 10);
-		prevPos = pos;
-		description = "grass";
-	}
+	};
 
-	void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
-	
-	void clear(ConsoleRenderer& renderer) override;
+	class Grass : public Actor {
+	public:
+		Grass() : Actor() {
+			pos = Vec2(5.0f + rand() % 110, 12 + rand() % 10);
+			prevPos = pos;
+			description = "grass";
+		}
 
-	void draw(ConsoleRenderer& renderer) override;
+		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
-private:
-};
+		void clear(ConsoleRenderer& renderer) override;
 
-class Flower : public Actor {
-public:
-	Flower() : Actor() {
-		pos = Vec2(5.0f + rand() % 110, 12 + rand() % 10);
-		prevPos = pos;
-		description = "flower";
-	}
+		void draw(ConsoleRenderer& renderer) override;
 
-	void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+	private:
+	};
 
-	void clear(ConsoleRenderer& renderer) override;
+	class Flower : public Actor {
+	public:
+		Flower() : Actor() {
+			pos = Vec2(5.0f + rand() % 110, 12 + rand() % 10);
+			prevPos = pos;
+			description = "flower";
+		}
 
-	void draw(ConsoleRenderer& renderer) override;
+		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
-private:
-};
+		void clear(ConsoleRenderer& renderer) override;
 
-class Heart : public Actor {
-public:
-	Heart(Vec2 _pos) : Actor() {
-		velocity = Vec2((float)(rand() % 11) - 5.0f, - rand() % 5);
-		pos = _pos + velocity * 2.0f;
-		prevPos = pos;
-		description = "heart";
-	}
+		void draw(ConsoleRenderer& renderer) override;
 
-	void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+	private:
+	};
 
-	void clear(ConsoleRenderer& renderer) override;
+	class Heart : public Actor {
+	public:
+		Heart(Vec2 _pos) : Actor() {
+			velocity = Vec2((float)(rand() % 11) - 5.0f, -rand() % 5);
+			pos = _pos + velocity * 2.0f;
+			prevPos = pos;
+			description = "heart";
+		}
 
-	void draw(ConsoleRenderer& renderer) override;
+		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
 
-private:
-	Vec2 velocity;
-	float lifeTime = 0.0f;
-};
+		void clear(ConsoleRenderer& renderer) override;
 
-class Textbox : public Actor {
-public:
-	Textbox(std::wstring_view _text) : Actor() {
-		text = _text;
-		pos = Vec2(60.0f, 8.0f);
-		prevPos = pos;
-		description = "textbox";
-	}
+		void draw(ConsoleRenderer& renderer) override;
 
-	void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
-	
-	void clear(ConsoleRenderer& renderer) override;
-	
-	void draw(ConsoleRenderer& renderer) override;
+	private:
+		Vec2 velocity;
+		float lifeTime = 0.0f;
+	};
 
-private:
-	std::wstring text;
-	float lifeTime = 0.0f;
-	bool firstDraw = true;
-};
+	class Textbox : public Actor {
+	public:
+		Textbox(std::wstring_view _text) : Actor() {
+			text = _text;
+			pos = Vec2(60.0f, 8.0f);
+			prevPos = pos;
+			description = "textbox";
+		}
+
+		void update(float dt, const std::vector<Actor*>& actors, std::vector<Actor*>& toDelete, std::vector<Actor*>& toAdd) override;
+
+		void clear(ConsoleRenderer& renderer) override;
+
+		void draw(ConsoleRenderer& renderer) override;
+
+	private:
+		std::wstring text;
+		float lifeTime = 0.0f;
+		bool firstDraw = true;
+	};
+}

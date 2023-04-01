@@ -3,16 +3,22 @@
 #include "scene.h"
 #include "consoleRenderer.h"
 
-class Application {
-public:
-	~Application();
+/*
+* Console Graphics Framework
+*/
+namespace cgf {
 
-	void run();
+	class Application {
+	public:
+		~Application();
 
-private:
-	void buildScene();
-	void mainLoop();
+		void run();
 
-	Scene scene;
-	ConsoleRenderer renderer;
-};
+	private:
+		void buildScene();
+		void mainLoop();
+
+		Scene scene;
+		ConsoleRenderer renderer;
+	};
+}

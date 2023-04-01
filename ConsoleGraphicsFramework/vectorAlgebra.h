@@ -27,7 +27,8 @@ namespace VectorAlgebra {
 
 	// Operator overrides:--------------------------
 
-	constexpr const float comparisonBias = 0.0001f;
+	inline constexpr float comparisonBias = 0.0001f;
+
 	inline bool operator==(Vec2 a, Vec2 b) {
 		return a.x < b.x + comparisonBias && a.y < b.y + comparisonBias
 			&& a.x > b.x - comparisonBias && a.y > b.y - comparisonBias;
@@ -234,4 +235,203 @@ namespace VectorAlgebra {
 		res.y = (int)fv.y;
 		return res;
 	}
+
+// ---------------------------------------------------------
+
+	/*
+	* 3D float vector
+	*/
+	struct Vec3 {
+		float x;
+		float y;
+		float z;
+
+		Vec3();
+
+		Vec3(const Vec2& v);
+
+		Vec3(const Vec3& v);
+
+		Vec3(IVec2 iv);
+
+		Vec3(float _xyz);
+
+		Vec3(float _x, float _y, float _z);
+	};
+
+	// Operator overrides:--------------------------
+
+	inline bool operator==(Vec3 a, Vec3 b) {
+		return a.x < b.x + comparisonBias && a.y < b.y + comparisonBias && a.z < b.z + comparisonBias
+			&& a.x > b.x - comparisonBias && a.y > b.y - comparisonBias && a.z > b.z - comparisonBias;
+	}
+
+	inline bool operator!=(Vec3 a, Vec3 b) {
+		return !(a == b);
+	}
+
+	inline Vec3 operator+(const Vec3& a, const Vec3& b) {
+		return Vec3{ a.x + b.x, a.y + b.y, a.y + b.y };
+	}	
+		
+	inline Vec3 operator-(const Vec3& a, const Vec3& b) {
+		return Vec3{ a.x - b.x , a.y - b.y, a.z - b.z };
+	}
+
+	inline Vec3 operator*(const Vec3& a, const Vec3& b) {
+		return Vec3{ a.x * b.x , a.y * b.y, a.z * b.z };
+	}
+
+	inline Vec3 operator*(const Vec3& a, float b) {
+		return Vec3{ a.x * b , a.y * b, a.z * b };
+	}
+
+	inline Vec3 operator*(float b, const Vec3& a) {
+		return Vec3{ a.x * b , a.y * b, a.z * b };
+	}
+
+	// -------------------------------------------
+
+	inline Vec3& operator+=(Vec3& a, const Vec3& b) {
+		a.x += b.x;
+		a.y += b.y;
+		a.z += b.z;
+		return a;
+	}
+
+	inline Vec3& operator-=(Vec3& a, const Vec3& b) {
+		a.x -= b.x;
+		a.y -= b.y;
+		a.z -= b.z;
+		return a;
+	}
+
+	inline Vec3& operator*=(Vec3& a, const Vec3& b) {
+		a.x *= b.x;
+		a.y *= b.y;
+		a.z *= b.z;
+		return a;
+	}
+
+	inline Vec3& operator*=(Vec3& a, float b) {
+		a.x *= b;
+		a.y *= b;
+		a.z *= b;
+		return a;
+	}
+
+	/*
+	* 3D vektorok osszege
+	*/
+	inline Vec3 sum(const Vec3& a, const Vec3& b) {
+		return Vec3{ a.x + b.x, a.y + b.y, a.y + b.y };
+
+	}
+
+	/*
+	* 3D vektor negaltja
+	*/
+	inline Vec3 neg(const Vec3& v) {
+		return Vec3{ -v.x, -v.y, -v.y };
+	}
+
+	/*
+	* 3D vektorok skalar / pont szorzata
+	*/
+	inline float dot(const Vec3& a, const Vec3& b) {
+		return a.x * b.x + a.y * b.y + a.z * b.z;
+	}
+
+	/*
+	* 3D vektorok kereszt szorzata
+	*/
+	inline Vec3 cross(const Vec3& a, const Vec3& b) {
+		return Vec3{ 
+			a.y * b.z - a.z * b.y, 
+			a.z * b.x - a.x * b.z,
+			a.x * b.y - a.y * b.x 
+		};
+	}
+
+	/*
+	* 3D pontok tavolsaga
+	*/
+	inline float distance(const Vec3& a, const Vec3& b) {
+		float dx = a.x - b.x;
+		float dy = a.y - b.y;
+		float dz = a.z - b.z;
+		return sqrtf(dx * dx + dy * dy + dz * dz);
+	}
+
+	/*
+	* 3D vektor hossza
+	*/
+	inline float length(const Vec3& v) {
+		return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	}
+
+	/*
+	* 3D vektor normalizaltja
+	* Azonos iranyu, egyseg hosszu vektor.
+	*/
+	inline Vec3 normal(const Vec3& v) {
+		float l = length(v);
+		return Vec3{ v.x / l, v.y / l, v.z / l };
+	}
+
+	// ----------------------------------------------------
+	
+	struct Complex {
+		float re;
+		float im;
+		
+		Complex();
+
+		Complex(float _re);
+
+		Complex(float _re, float _im);
+
+		explicit Complex(const Vec2& v);
+	
+		float amplitude() {
+			return sqrtf(re * re + im * im);
+		}
+
+		float angle() {
+			return atanf(im / re );
+		}
+	};
+
+	inline Complex fromEuler(float amplitude, float angle) {
+		return Complex{ amplitude * cosf(angle), amplitude * sinf(angle) };
+	}
+
+	inline Complex conjugate(const Complex& c) {
+		return Complex{ c.re, -c.im };
+	}
+
+	inline Complex operator+(const Complex& a, const Complex& b) {
+		return Complex{ a.re + b.re, a.im + b.im };
+	}
+
+	inline Complex operator-(const Complex& a, const Complex& b) {
+		return Complex{ a.re - b.re, a.im - b.im };
+	}
+
+	inline Complex operator*(const Complex& a, const Complex& b) {
+		return Complex{ 
+			a.re * b.re - a.im * b.im,
+			a.re * b.im + a.im * b.re 
+		};
+	}
+
+	inline Complex operator/(const Complex& a, const Complex& b) {
+		float divider = b.re * b.re + b.im * b.im;
+		return Complex{ 
+			(a.re * b.re + a.im * b.im ) / divider, 
+			(a.im * b.re - a.re * b.im) / divider 
+		};
+	}
+
 }
+
