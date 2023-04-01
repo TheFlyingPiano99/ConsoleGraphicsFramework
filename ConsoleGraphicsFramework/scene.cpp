@@ -13,7 +13,6 @@ void cgf::Scene::addActor(Actor* actor) {
 /*
 * Felhasználói bemenet kezelése
 */
-
 void cgf::Scene::handleInput() {
 	for (auto& actor : actors) {
 		actor->handleInput(deltaT);
@@ -23,7 +22,6 @@ void cgf::Scene::handleInput() {
 /*
 * Szereplők frissítése
 */
-
 void cgf::Scene::update() {
 	for (auto& actor : actors) {
 		actor->update(deltaT, actors, toDelete, toAdd);
@@ -46,9 +44,8 @@ void cgf::Scene::update() {
 /*
 * Kirajzolás
 */
-
 void cgf::Scene::draw(ConsoleRenderer& renderer) {
-	std::sort(actors.begin(), actors.end(), [](Actor* a, Actor* b) { return a->getPos().y < b->getPos().y; });
+	std::sort(actors.begin(), actors.end(), [](Actor* a, Actor* b) { return a->getPos().z > b->getPos().z; });
 	for (auto& actor : actors) {
 		actor->draw(renderer);
 	}

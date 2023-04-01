@@ -27,11 +27,11 @@ namespace cgf {
 
 		virtual void draw(ConsoleRenderer& renderer) {}
 
-		Vec2 getPos() const {
+		Vec3 getPos() const {
 			return pos;
 		}
 
-		void setPos(Vec2 _pos) {
+		void setPos(Vec3 _pos) {
 			pos = _pos;
 		}
 
@@ -44,8 +44,8 @@ namespace cgf {
 		}
 
 	protected:
-		Vec2 pos;
-		Vec2 prevPos;
+		Vec3 pos;
+		Vec3 prevPos;
 		std::string description;
 	};
 
@@ -57,6 +57,10 @@ namespace cgf {
 	*/
 	class Sky : public Actor {
 	public:
+		Sky() : Actor() {
+			pos = Vec3(0, 0, 10);
+		}
+
 		void draw(ConsoleRenderer& renderer) override;
 
 	private:
@@ -69,7 +73,7 @@ namespace cgf {
 	class Walkers : public Actor {
 	public:
 		Walkers() {
-			pos = Vec2(50, 38);
+			pos = Vec3(50, 38, -1);
 			description = "walkers";
 		}
 
@@ -93,7 +97,7 @@ namespace cgf {
 	class Pole : public Actor {
 	public:
 		Pole() : Actor() {
-			pos = Vec2(20 + rand() % 100, 11);
+			pos = Vec3(20 + rand() % 100, 11, 1.0f);
 			prevPos = pos;
 			description = "pole";
 		}
@@ -121,7 +125,7 @@ namespace cgf {
 	class Scoreboard : public Actor {
 	public:
 		Scoreboard() : Actor() {
-			pos = Vec2(3, 2);
+			pos = Vec3(3, 2, -1);
 			prevPos = pos;
 			description = "scoreboard";
 		}
@@ -142,7 +146,7 @@ namespace cgf {
 	class Grass : public Actor {
 	public:
 		Grass() : Actor() {
-			pos = Vec2(5.0f + rand() % 110, 12 + rand() % 10);
+			pos = Vec3(5.0f + rand() % 110, 12 + rand() % 10, 2.0f);
 			prevPos = pos;
 			description = "grass";
 		}
@@ -159,7 +163,7 @@ namespace cgf {
 	class Flower : public Actor {
 	public:
 		Flower() : Actor() {
-			pos = Vec2(5.0f + rand() % 110, 12 + rand() % 10);
+			pos = Vec3(5.0f + rand() % 110, 12 + rand() % 10, 2.0f);
 			prevPos = pos;
 			description = "flower";
 		}
@@ -175,9 +179,9 @@ namespace cgf {
 
 	class Heart : public Actor {
 	public:
-		Heart(Vec2 _pos) : Actor() {
+		Heart(Vec3 _pos) : Actor() {
 			velocity = Vec2((float)(rand() % 11) - 5.0f, -rand() % 5);
-			pos = _pos + velocity * 2.0f;
+			pos = _pos + velocity * 2.0f - Vec3(0, 0, 3);
 			prevPos = pos;
 			description = "heart";
 		}
@@ -197,7 +201,7 @@ namespace cgf {
 	public:
 		Textbox(std::wstring_view _text) : Actor() {
 			text = _text;
-			pos = Vec2(60.0f, 8.0f);
+			pos = Vec3(60.0f, 8.0f, -1);
 			prevPos = pos;
 			description = "textbox";
 		}

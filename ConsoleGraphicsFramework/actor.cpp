@@ -47,7 +47,7 @@ namespace cgf {
 				}
 				auto iter = std::find_if(actors.begin(), actors.end(), [](Actor* const actor) -> bool { return actor->getDescription() == "scoreboard"; });
 				for (int i = 0; i < 5; i++) {
-					toAdd.push_back(new Heart(pos - Vec2(0, 12.0f)));
+					toAdd.push_back(new Heart(pos - Vec3(0, 12.0f, 0)));
 				}
 				if (iter != actors.end()) {
 					static_cast<Scoreboard*>(*iter)->IncrementScore(1);
@@ -170,7 +170,7 @@ namespace cgf {
 	}
 
 	void Walkers::draw(ConsoleRenderer& renderer) {
-		if (IVec2(pos) != IVec2(prevPos)) {
+		if (IVec2(pos.x, pos.y) != IVec2(prevPos.x, prevPos.y)) {
 			clear(renderer);
 		}
 
@@ -306,7 +306,7 @@ namespace cgf {
 	}
 
 	void Pole::draw(ConsoleRenderer& renderer) {
-		if (IVec2(pos) != IVec2(prevPos)) {
+		if (IVec2(pos.x, pos.y) != IVec2(prevPos.x, prevPos.y)) {
 			clear(renderer);
 		}
 
@@ -494,7 +494,7 @@ namespace cgf {
 
 	void Textbox::draw(ConsoleRenderer& renderer)
 	{
-		if (firstDraw || IVec2(pos) != IVec2(prevPos)) {
+		if (firstDraw || IVec2(pos.x, pos.y) != IVec2(prevPos.x, prevPos.y)) {
 			firstDraw = false;
 			clear(renderer);
 		}

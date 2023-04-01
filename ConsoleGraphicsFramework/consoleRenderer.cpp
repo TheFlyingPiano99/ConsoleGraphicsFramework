@@ -76,7 +76,7 @@ namespace cgf{
         if (0 > x || 0 > y || x > sizeInChar.x || y > sizeInChar.y) {   // Prevent out of window positions
             return false;
         }
-        COORD coord = { (SHORT)x, (SHORT)y };
+        COORD coord = { (SHORT)x, (SHORT)(y) };
         if (SetConsoleCursorPosition(hSTD_IO, coord)) {
             cursorPos = IVec2(x, y);
             return true;
