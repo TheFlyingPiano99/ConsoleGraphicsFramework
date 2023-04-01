@@ -8,7 +8,7 @@
 namespace cgf {
 
 	void Sky::draw(cgf::ConsoleRenderer& renderer) {
-		renderer.setColor(Color::backgroundLightBlue);
+		renderer.setColor(Color::background_light_blue);
 		for (int x = 0; x <= 100; x += 50) {
 			for (int y = 0; y < 10; y++) {
 				if (renderer.setCursorPosition(x, y)) {
@@ -174,7 +174,7 @@ namespace cgf {
 			clear(renderer);
 		}
 
-		renderer.setColor(Color::foregroundLightYellow);
+		renderer.setColor(Color::foreground_light_yellow);
 		if (renderer.setCursorPosition((int)pos.x - 10, (int)pos.y - 16)) {
 			std::cout << "___";
 		}
@@ -385,7 +385,7 @@ namespace cgf {
 	{
 		clear(renderer);
 		renderer.setCursorPosition(pos.x, pos.y);
-		renderer.setColor(Color::foregroundLightGreen);
+		renderer.setColor(Color::foreground_light_green);
 		if (pos.y < 20.0f) {
 			std::cout << " ~ ";
 		}
@@ -421,15 +421,15 @@ namespace cgf {
 	{
 		clear(renderer);
 		if (pos.y < 30.0f) {
-			renderer.setColor(Color::foregroundLightYellow);
+			renderer.setColor(Color::foreground_light_yellow);
 			renderer.setCursorPosition(pos.x, pos.y - 0);
 			std::cout << "*";
 		}
 		else {
 			renderer.setCursorPosition(pos.x, pos.y - 1);
-			renderer.setColor(Color::foregroundLightYellow);
+			renderer.setColor(Color::foreground_light_yellow);
 			std::cout << "*";
-			renderer.setColor(Color::foregroundGreen);
+			renderer.setColor(Color::foreground_green);
 			renderer.setCursorPosition(pos.x, pos.y - 0);
 			std::cout << "|";
 		}
@@ -462,7 +462,7 @@ namespace cgf {
 	void Heart::draw(ConsoleRenderer& renderer)
 	{
 		clear(renderer);
-		renderer.setColor(Color::foregroundLightPurple);
+		renderer.setColor(Color::foreground_light_purple);
 		renderer.setCursorPosition(pos.x - 2, pos.y - 2);
 		std::cout << " _ _ ";
 		renderer.setCursorPosition(pos.x - 2, pos.y - 1);

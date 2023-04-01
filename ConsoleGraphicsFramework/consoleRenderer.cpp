@@ -15,7 +15,7 @@ namespace cgf{
 
     void ConsoleRenderer::reset()
     {
-        SetConsoleTextAttribute(hSTD_IO, (WORD)Color::backgroundBlack);
+        SetConsoleTextAttribute(hSTD_IO, (WORD)Color::background_black);
         SetConsoleTextAttribute(hSTD_IO, (WORD)Color::foreground_bright_white);
         setCursorPosition(0, 0);
     }
